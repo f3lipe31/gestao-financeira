@@ -4,7 +4,7 @@ import { categories } from "../constants/categories";
 import { colors } from "../constants/colors";
 
 export default function CategoryItem({ category }) {
-  // O ?? garante que, se a categoria não for encontrada, ele usa "food" como padrão para não quebrar o app
+  // O ?? protege contra categorias antigas salvas na memória que não existem mais
   const categoryConfig = categories[category] ?? categories.food;
 
   return (
