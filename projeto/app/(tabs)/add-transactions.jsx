@@ -1,57 +1,56 @@
-import {
-  View,
-  ScrollView,
-  Alert,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Platform
-} from "react-native";
+import { View, ScrollView, Alert, StyleSheet, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { globalStyles } from "../../styles/globalStyles";
 import Button from "../../components/Button";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import DescriptionInput from "../../components/DescriptionInput";
 import CurrencyInput from "../../components/CurrencyInput";
 import DatePicker from "../../components/DatePicker";
 import CategoryPicker from "../../components/CategoryPicker";
+import { MoneyContext } from "../../contexts/GlobalState";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const initialForm = {
   description: "",
   value: 0,
   date: new Date(),
-  category: "income",
+  category: "Renda",
 };
 
 export default function AddTransactions() {
   const [form, setForm] = useState(initialForm);
   const valueInputRef = useRef();
+  
+  // Consumindo o estado global!
+  const [transactions, setTransactions] = useContext(MoneyContext);
 
-  const addTransaction = () => {
-    Alert.alert(
-      "Dados Prontos!",
-      `${form.description} | R$ ${form.value.toFixed(2)} | ${form.date.toLocaleDateString("pt-BR")} | ${form.category}`
-    );
+  const setAsyncStorage = async (data) => {
+    try {
+      // O AsyncStorage exige que salvemos objetos/arrays como String
+      await AsyncStorage.setItem("transactions", JSON.stringify(data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const addTransaction = async () => {
+    // Cria a transação gerando um ID baseado no tamanho da lista
+    const newTransaction = { id: transactions.length + 1, ...form };
+    const updatedTransactions = [...transactions, newTransaction];
+
+    setTransactions(updatedTransactions); // Atualiza a memória RAM (Contexto)
+    setForm(initialForm);                 // Limpa o formulário
+    await setAsyncStorage(updatedTransactions); // Atualiza a memória do Celular (Storage)
+
+    Alert.alert("Sucesso!", "Transação adicionada com sucesso!");
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={globalStyles.screenContainer} 
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardAvoidingView style={globalStyles.screenContainer}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView style={globalStyles.content}>
           <View style={styles.form}>
-            <DescriptionInput
-              form={form}
-              setForm={setForm}
-              valueInputRef={valueInputRef}
-            />
-            <CurrencyInput
-              form={form}
-              setForm={setForm}
-              valueInputRef={valueInputRef}
-            />
+            <DescriptionInput form={form} setForm={setForm} valueInputRef={valueInputRef} />
+            <CurrencyInput form={form} setForm={setForm} valueInputRef={valueInputRef} />
             <DatePicker form={form} setForm={setForm} />
             <CategoryPicker form={form} setForm={setForm} />
           </View>
@@ -63,9 +62,5 @@ export default function AddTransactions() {
 }
 
 const styles = StyleSheet.create({
-  form: {
-    gap: 12,
-    marginBottom: 40,
-    marginTop: 10,
-  },
+  form: { gap: 12, marginBottom: 40, marginTop: 10 },
 });
