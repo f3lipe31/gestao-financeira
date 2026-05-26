@@ -1,0 +1,223 @@
+{
+  "info": {
+    "_postman_id": "080c0eb7-8c51-464d-b853-a2c0cf2e7a4c",
+    "name": "Gestão Financeira API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54759937"
+  },
+  "item": [
+    {
+      "name": "Health-check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar categorias",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/categories",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Criar categoria",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"health\",\r\n  \"displayName\": \"Saúde\",\r\n  \"icon\": \"favorite\",\r\n  \"background\": \"#FFB6B6\",\r\n  \"isIncome\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualizar categoria",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"displayName\": \"Saúde e Bem-estar\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/categories/cmpmxtinp0001i9gcdzqstk53",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "categories",
+            "cmpmxtinp0001i9gcdzqstk53"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Excluir categoria",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/categories/cmpmxtinp0001i9gcdzqstk53",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "categories",
+            "cmpmxtinp0001i9gcdzqstk53"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Criar transação",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"description\": \"Almoço de hoje\",\r\n  \"value\": 35.50,\r\n  \"date\": \"2026-05-26\",\r\n  \"categoryId\": \"cmpmxtinp0001i9gcdzqstk53\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "transactions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar transações",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "transactions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Excluir transação",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/transactions/cmpn08pp50003136uc59ln5pq",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "transactions",
+            "cmpn08pp50003136uc59ln5pq"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Validar erros",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"description\": \"\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "transactions"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
