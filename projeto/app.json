@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "projeto",
+    "slug": "projeto",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.felipe310805.projeto"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6f6460eb-6fa8-456a-ae93-5d22ab7e8d3a"
+      }
+    },
+    "owner": "felipe310805"
+  }
+}
