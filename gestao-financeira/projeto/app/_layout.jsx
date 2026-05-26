@@ -9,6 +9,9 @@ export default function RootLayout() {
     <GlobalState>
       <StatusBar backgroundColor={colors.primary} style="light" />
       <Stack>
+        {/* Adicionamos a tela de login (index) aqui, escondendo o cabeçalho */}
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
