@@ -37,8 +37,10 @@ export default function GlobalState({ children }) {
       setError(null);
       const newTx = await api.createTransaction(data);
       setTransactions((prev) => [newTx, ...prev]);
+      return newTx;
     } catch (e) {
       setError(e.message ?? "Erro ao adicionar transação");
+      throw e;
     }
   }, []);
 

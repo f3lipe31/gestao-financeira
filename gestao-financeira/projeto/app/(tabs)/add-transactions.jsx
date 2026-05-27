@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { MoneyContext } from "../../contexts/GlobalState";
@@ -16,8 +16,14 @@ export default function AddTransactionScreen() {
   const [categoryId, setCategoryId] = useState(defaultCategory);
   const [isSaving, setIsSaving] = useState(false);
 
+  useEffect(() => {
+    if (!categoryId && categories.length > 0) {
+      setCategoryId(categories[0].id);
+    }
+  }, [categories, categoryId]);
+
   const handleSave = async () => {
-    if (!description || !value || !categoryId) {
+    if (!description.trim() || !value.trim() || !categoryId) {
       Alert.alert("Atenção", "Preencha todos os campos.");
       return;
     }
@@ -29,18 +35,23 @@ export default function AddTransactionScreen() {
     }
 
     setIsSaving(true);
-    await addTransaction({
-      description,
-      value: numericValue,
-      categoryId,
-      date: new Date().toISOString(),
-    });
-    setIsSaving(false);
+    try {
+      await addTransaction({
+        description: description.trim(),
+        value: numericValue,
+        categoryId,
+        date: new Date().toISOString(),
+      });
 
-    // Limpa o form e volta pra tela inicial
-    setDescription("");
-    setValue("");
-    router.replace("/");
+      // Limpa o form e volta pra tela inicial
+      setDescription("");
+      setValue("");
+      router.replace("/");
+    } catch (e) {
+      Alert.alert("Erro", e.message ?? "Não foi possível salvar a transação.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -60,7 +71,7 @@ export default function AddTransactionScreen() {
         </Picker>
       </View>
 
-      <TouchableOpacity style={[styles.btn, isSaving && styles.btnDisabled]} onPress={handleSave} disabled={isSaving}>
+      <TouchableOpacity style={[styles.btn, (isSaving || categories.length === 0) && styles.btnDisabled]} onPress={handleSave} disabled={isSaving || categories.length === 0}>
         {isSaving ? <ActivityIndicator color="#FFF" /> : <Text style={styles.btnText}>Salvar Transação</Text>}
       </TouchableOpacity>
     </View>

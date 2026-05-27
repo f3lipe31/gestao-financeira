@@ -1,11 +1,16 @@
 // services/api.js
+import { Platform } from "react-native";
 
 /**
  * URL base da API.
  * - No emulador Android do Android Studio, usamos o IP 10.0.2.2 para acessar o PC.
  * - Pode ser sobrescrita via variável de ambiente do Expo (EXPO_PUBLIC_API_URL).
  */
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://10.0.2.2:3000";
+const DEFAULT_BASE_URL = Platform.OS === "android"
+  ? "http://10.0.2.2:3000"
+  : "http://localhost:3000";
+
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? DEFAULT_BASE_URL;
 
 async function request(path, options = {}) {
   const response = await fetch(`${BASE_URL}${path}`, {
